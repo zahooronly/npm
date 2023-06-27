@@ -49,11 +49,7 @@ app.get("/api/articles/:year/:month/:day", (req, res) => {
 
 app.post("/api/courses", (req, res) => {
   // Input Validation because we don't trust the client, he/she can send any type of input
-  schema = Joi.object({
-    nam: Joi.string().min(3).max(30).required(),
-  });
-  const { error } = schema.validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  validateCourse(req.body);
   const course = {
     id: courses.length + 1,
     name: req.body.name,
@@ -71,13 +67,17 @@ app.put("/api/courses/:id", (req, res) => {
   const course = courses.find((a) => a.id === parseInt(req.params.id));
   if (!course) res.status(404).send("Course doesn't exist");
   // does the input valid?
-  schema = Joi.object({
-    name: Joi.string().min(3).max(30).required(),
-  });
-  const { error } = schema.validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  validateCourse(req.body);
   course.name = req.body.name;
   res.send(course);
 });
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`listening on port ${port}...`));
+
+function validateCourse(course) {
+  schema = Joi.object({
+    name: Joi.string().min(3).max(30).required(),
+  });
+  const { error } = schema.validate(course);
+  if (error) return res.status(400).send(error.details[0].message);
+}

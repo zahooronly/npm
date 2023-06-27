@@ -1,6 +1,7 @@
+const Joi = require("joi");
 const express = require("express");
 const app = express();
-// app.use(express.json);
+app.use(express.json());
 const courses = [
   {
     id: 1,
@@ -44,14 +45,25 @@ app.get("/api/articles/:year/:month/:day", (req, res) => {
   res.send(req.query);
 });
 
-// app.post("api/courses", (req, res) => {
-//   const course = {
-//     id: courses.length + 1,
-//     name: req.body.name,
-//   };
-//   courses.push(course);
-//   res.send(course);
-// });
+// http post request
+
+app.post("/api/courses", (req, res) => {
+  // Input Validation because we don't trust the client, he/she can send any type of input
+  schema = Joi.object({
+    nam: Joi.string().min(3).max(30).required(),
+  });
+  const { error } = schema.validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  const courseN = {
+    id: courses.length + 1,
+    nam: req.body.nam,
+  };
+  courses.push(courseN);
+  res.send(courseN);
+});
+app.post("/post", (req, res) => {
+  res.send("post method");
+});
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`listening on port ${port}...`));

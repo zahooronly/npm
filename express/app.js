@@ -31,19 +31,22 @@ app.get("/", (req, res) => {
 app.get("/api", (req, res) => {
   res.send([1, 2, 3, 4, 5, 6, 7]);
 });
-
+// get all courses
+app.get("/api/courses/", (req, res) => {
+  res.send(courses);
+});
 app.get("/api/courses/:id", (req, res) => {
   // res.send(req.params.id);
   const course = courses.find((a) => a.id === parseInt(req.params.id));
-  if (!course) res.status(404).send("Course doesn't exist");
+  if (!course) return res.status(404).send("Course doesn't exist");
   res.send(course);
 });
-// app.get("/api/articles/:year/:month/:day", (req, res) => {
-//   res.send(req.params);
-// });
 app.get("/api/articles/:year/:month/:day", (req, res) => {
-  res.send(req.query);
+  res.send(req.params);
 });
+// app.get("/api/articles/:year/:month/:day", (req, res) => {
+//   res.send(req.query);
+// });
 
 // http post request
 
@@ -65,10 +68,19 @@ app.post("/post", (req, res) => {
 app.put("/api/courses/:id", (req, res) => {
   // does course exists?
   const course = courses.find((a) => a.id === parseInt(req.params.id));
-  if (!course) res.status(404).send("Course doesn't exist");
+  if (!course) return res.status(404).send("Course doesn't exist");
   // does the input valid?
   validateCourse(req.body);
   course.name = req.body.name;
+  res.send(course);
+});
+
+// http delete request
+app.delete("/api/courses/:id", (req, res) => {
+  const course = courses.find((a) => a.id === parseInt(req.params.id));
+  if (!course) return res.status(404).send("Course doesn't exist");
+  const index = courses.indexOf(course);
+  courses.splice(index, 1);
   res.send(course);
 });
 const port = process.env.PORT || 8000;

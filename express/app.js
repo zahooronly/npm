@@ -54,16 +54,30 @@ app.post("/api/courses", (req, res) => {
   });
   const { error } = schema.validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
-  const courseN = {
+  const course = {
     id: courses.length + 1,
-    nam: req.body.nam,
+    name: req.body.name,
   };
-  courses.push(courseN);
-  res.send(courseN);
+  courses.push(course);
+  res.send(course);
 });
 app.post("/post", (req, res) => {
   res.send("post method");
 });
 
+//  put method to update data
+app.put("/api/courses/:id", (req, res) => {
+  // does course exists?
+  const course = courses.find((a) => a.id === parseInt(req.params.id));
+  if (!course) res.status(404).send("Course doesn't exist");
+  // does the input valid?
+  schema = Joi.object({
+    name: Joi.string().min(3).max(30).required(),
+  });
+  const { error } = schema.validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  course.name = req.body.name;
+  res.send(course);
+});
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`listening on port ${port}...`));

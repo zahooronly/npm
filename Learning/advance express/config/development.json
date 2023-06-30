@@ -1,0 +1,10 @@
+{
+    "name":"Express App - Development",
+    "mail":{
+        "host":"smtp.mail.com",
+        "secure":true,
+        "auth":{
+            "user":"ZahoorOnly"
+    }
+}
+}

@@ -1,14 +1,13 @@
 console.log("First Statement");
 const p = getUser(1);
 console.log("Second Statement");
-
+// Calling with Promises
 p.then((user) => getRepos(user.gitUsername)).then((repos) =>
   getCommits(repos).then((commits) => console.log("Commits: ", commits))
 );
 
-// Callback Functions
-// function getUser()
-
+// Async and Await
+// we declare the function as Async and then we make it await for the result so that we can use that value
 // Functions
 function getUser(id) {
   return new Promise((resolve, reject) => {

@@ -86,6 +86,7 @@ async function firstUpdateCourse(id) {
 
 // firstUpdateCourse("64a152a1cb6a55e187aa7ddd");
 
+// directUpdateCourse();
 async function directUpdateCourse() {
   const result = await Course.updateMany(
     { auther: "ZahoorOnly" },
@@ -99,4 +100,12 @@ async function directUpdateCourse() {
   console.log("Updated Course is:\n", result);
 }
 
-// directUpdateCourse();
+// D=> Delete {CRUD completed}
+async function deleteCourse(ID) {
+  const result = await Course.deleteOne({ _id: ID });
+  // if want to get the deleted course, then we can use
+  //  findByIdAndRemove
+  // Course.findByIdAndRemove
+  console.log("Deleted Course:\n", result);
+}
+// deleteCourse("64a152a1cb6a55e187aa7ddd");

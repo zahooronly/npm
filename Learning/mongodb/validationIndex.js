@@ -7,7 +7,7 @@ mongoose
 // Schemas
 
 const courseSchema = new mongoose.Schema({
-  name: String,
+  name: { type: String, required: true },
   auther: String,
   tags: [String],
   date: { type: Date, default: Date.now },
@@ -26,9 +26,13 @@ const createCourse = async () => {
     tags: ["backend", "ZahoorOnly", "Prisma", "backend", "mongodb", "mongoose"],
     isPublished: true,
   });
-
-  const result = await course.save();
-  console.log(result);
+  try {
+    await course.validate();
+    // const result = await course.save();
+    // console.log(result);
+  } catch (ex) {
+    console.log(ex.message);
+  }
 };
 // createCourse();
 

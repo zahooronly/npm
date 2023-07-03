@@ -1,2 +1,2 @@
-result = await course.save();
-    // consol
+await course.save();
+    console.log(res
